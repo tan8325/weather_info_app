@@ -52,6 +52,7 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Weather Info App'),
+        backgroundColor: Colors.blue, // Add background color for the header bar
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
