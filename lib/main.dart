@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -25,7 +26,6 @@ class WeatherHomePage extends StatefulWidget {
 
 class _WeatherHomePageState extends State<WeatherHomePage> {
   final TextEditingController _cityController = TextEditingController();
-
   String _cityName = '';
   String _temperature = 'N/A';
   String _weatherCondition = 'Unknown';
@@ -33,9 +33,18 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
   void _fetchWeather() {
     setState(() {
       _cityName = _cityController.text;
-      _temperature = '150°F';
-      _weatherCondition = 'Freezing';
+      _temperature = '${_generateRandomTemperature()}°C';
+      _weatherCondition = _generateRandomWeatherCondition();
     });
+  }
+
+  int _generateRandomTemperature() {
+    return Random().nextInt(16) + 15;
+  }
+
+  String _generateRandomWeatherCondition() {
+    List<String> conditions = ['Sunny', 'Cloudy', 'Rainy'];
+    return conditions[Random().nextInt(conditions.length)];
   }
 
   @override
@@ -57,25 +66,14 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
               ),
             ),
             SizedBox(height: 20),
-
             ElevatedButton(
               onPressed: _fetchWeather,
               child: Text('Fetch Weather'),
             ),
             SizedBox(height: 20),
-
-            Text(
-              'City: $_cityName',
-              style: TextStyle(fontSize: 18),
-            ),
-            Text(
-              'Temperature: $_temperature',
-              style: TextStyle(fontSize: 18),
-            ),
-            Text(
-              'Weather Condition: $_weatherCondition',
-              style: TextStyle(fontSize: 18),
-            ),
+            Text('City: $_cityName', style: TextStyle(fontSize: 18)),
+            Text('Temperature: $_temperature', style: TextStyle(fontSize: 18)),
+            Text('Weather Condition: $_weatherCondition', style: TextStyle(fontSize: 18)),
           ],
         ),
       ),
