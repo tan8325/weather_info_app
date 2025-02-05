@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
       title: 'Weather Info App',
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        useMaterial3: true,
+        brightness: Brightness.light,
       ),
       home: WeatherHomePage(),
     );
@@ -68,6 +68,10 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: _fetchWeather,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blueAccent,
+                foregroundColor: Colors.white,
+              ),
               child: Text('Fetch Weather'),
             ),
             SizedBox(height: 20),
