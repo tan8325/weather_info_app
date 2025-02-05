@@ -49,39 +49,86 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Weather Info App'),
-        backgroundColor: Colors.blue, // Add background color for the header bar
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            TextField(
-              controller: _cityController,
-              decoration: InputDecoration(
-                labelText: 'Enter City Name',
-                border: OutlineInputBorder(),
+    return DefaultTabController(
+      length: 2, // Two tabs: one for current weather, one for 7-day forecast
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Weather Info App'),
+          backgroundColor: Colors.blue,
+          bottom: TabBar(
+            tabs: [
+              Tab(text: 'Current Weather'),
+              Tab(text: '7-Day Forecast'),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            // Current Weather Tab
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  TextField(
+                    controller: _cityController,
+                    decoration: InputDecoration(
+                      labelText: 'Enter City Name',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: _fetchWeather,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blueAccent,
+                      foregroundColor: Colors.white,
+                    ),
+                    child: Text('Fetch Weather'),
+                  ),
+                  SizedBox(height: 20),
+                  Text('City: $_cityName', style: TextStyle(fontSize: 18)),
+                  Text('Temperature: $_temperature', style: TextStyle(fontSize: 18)),
+                  Text('Weather Condition: $_weatherCondition', style: TextStyle(fontSize: 18)),
+                ],
               ),
             ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _fetchWeather,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blueAccent,
-                foregroundColor: Colors.white,
+            // 7-Day Forecast Tab
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: <Widget>[
+                  Text('7-Day Weather Forecast', style: TextStyle(fontSize: 22)),
+                  SizedBox(height: 20),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: 7,
+                      itemBuilder: (context, index) {
+                        String day = _generateRandomDay();
+                        String temperature = '${_generateRandomTemperature()}°C';
+                        String condition = _generateRandomWeatherCondition();
+
+                        return Card(
+                          margin: EdgeInsets.symmetric(vertical: 8),
+                          child: ListTile(
+                            title: Text(day),
+                            subtitle: Text('$condition - $temperature'),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
-              child: Text('Fetch Weather'),
             ),
-            SizedBox(height: 20),
-            Text('City: $_cityName', style: TextStyle(fontSize: 18)),
-            Text('Temperature: $_temperature', style: TextStyle(fontSize: 18)),
-            Text('Weather Condition: $_weatherCondition', style: TextStyle(fontSize: 18)),
           ],
         ),
       ),
     );
+  }
+
+  String _generateRandomDay() {
+    List<String> days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    return days[Random().nextInt(days.length)];
   }
 }
